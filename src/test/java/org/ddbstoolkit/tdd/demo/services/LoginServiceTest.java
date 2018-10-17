@@ -30,7 +30,7 @@ public class LoginServiceTest {
         Assert.assertFalse(LoginService.authenticate(User.createUserWithLoginPassword("test", "test2")));
 
         //Add an unknown user
-        Assert.assertTrue(LoginService.authenticate(User.createUserWithLoginPassword("test2", "test")));
+        Assert.assertFalse(LoginService.authenticate(User.createUserWithLoginPassword("test2", "test")));
     }
 
     /**
