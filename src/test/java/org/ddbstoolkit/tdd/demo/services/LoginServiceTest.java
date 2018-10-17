@@ -77,5 +77,14 @@ public class LoginServiceTest {
     public void testJwtLogin() throws EmptyFieldException {
         User userWithToken = User.createUserWithJwtToken(UserDao.createUserToken(User.createUserWithLogin("test")));
         Assert.assertTrue(LoginService.authenticate(userWithToken));
+
+        /**
+         * JWT with wrong authentication
+         * Code coverage improvement
+         */
+        UserDao.setSecret("secret2");
+        User userWithBadToken = User.createUserWithJwtToken(UserDao.createUserToken(User.createUserWithLogin("test")));
+        UserDao.setSecret("secret");
+        Assert.assertFalse(LoginService.authenticate(userWithBadToken));
     }
 }
