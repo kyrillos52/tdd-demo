@@ -68,4 +68,14 @@ public class LoginServiceTest {
     public void testEmptyPassword() throws EmptyFieldException {
         LoginService.authenticate(User.createUserWithLoginPassword("test", ""));
     }
+
+    /**
+     * Test JWT authentication
+     * @throws EmptyFieldException Empty fiel
+     */
+    @Test
+    public void testJwtLogin() throws EmptyFieldException {
+        User userWithToken = User.createUserWithJwtToken(UserDao.createUserToken(User.createUserWithLogin("test")));
+        Assert.assertTrue(LoginService.authenticate(userWithToken));
+    }
 }
