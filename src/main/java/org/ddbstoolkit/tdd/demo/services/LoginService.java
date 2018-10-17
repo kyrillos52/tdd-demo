@@ -18,9 +18,18 @@ public class LoginService {
      */
     public static boolean authenticate(User user) throws EmptyFieldException {
 
-        //Check null or empty login or password
-        if(user.getLogin() == null || user.getPassword() == null || user.getLogin().isEmpty() || user.getPassword().isEmpty()) {
-            throw new EmptyFieldException("User has an empty field");
+        /**
+         * If there is a JWT Web token
+         */
+        if(user.getJwtToken() != null) {
+            User userDecode = UserDao.getUserWithToken(user.getJwtToken());
+            //If we succeeded to extract a user
+            if(userDecode != null) {
+                //We check if the user exist in the database
+                return UserDao.getUser(userDecode.getLogin()) != null;
+            } else {
+                return false;
+            }
         }
 
         User currentUser = UserDao.getUser(user.getLogin());
