@@ -32,6 +32,10 @@ public class LoginService {
             }
         }
 
+        if(user.getLogin() == null || user.getPassword() == null || user.getLogin().isEmpty() || user.getPassword().isEmpty()) {
+            throw new EmptyFieldException("User has an empty field");
+        }
+
         User currentUser = UserDao.getUser(user.getLogin());
         //If user has been found and password is correct
         if(currentUser != null && DigestUtils.md5Hex(user.getPassword()).equals(currentUser.getPassword())) {
