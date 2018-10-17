@@ -17,8 +17,15 @@ public class LoginService {
      * @throws EmptyFieldException Exception raised when there is a login or password sent empty
      */
     public static boolean authenticate(User user) throws EmptyFieldException {
+
+        //Check null or empty login or password
+        if(user.getLogin() == null || user.getPassword() == null || user.getLogin().isEmpty() || user.getPassword().isEmpty()) {
+            throw new EmptyFieldException("User has an empty field");
+        }
+
         User currentUser = UserDao.getUser(user.getLogin());
-        if(DigestUtils.md5Hex(user.getPassword()).equals(currentUser.getPassword())) {
+        //If user has been found and password is correct
+        if(currentUser != null && DigestUtils.md5Hex(user.getPassword()).equals(currentUser.getPassword())) {
             return true;
         } else {
             return false;
